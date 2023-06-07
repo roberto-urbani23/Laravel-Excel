@@ -83,6 +83,18 @@ class ChunkReader
 
         $afterImportJob = new AfterImportJob($import, $reader);
 
+        if ($import instanceof ShouldBatch) {
+
+            if($jobs->count() === 0){
+                return dispatch($afterImportJob);
+            }
+
+            return Bus::batch($jobs)
+                ->then(function(Batch $batch) use ($afterImportJob) {
+                    dispatch($afterImportJob);
+                })->dispatch();
+        }
+
         if ($import instanceof ShouldQueueWithoutChain) {
             $jobs->push($afterImportJob->delay($delayCleanup));
 

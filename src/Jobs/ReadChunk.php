@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -22,7 +23,7 @@ use Throwable;
 
 class ReadChunk implements ShouldQueue
 {
-    use Queueable, HasEventBus, InteractsWithQueue;
+    use Queueable, HasEventBus, InteractsWithQueue,Batchable;
 
     /**
      * @var int
